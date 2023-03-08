@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<meta
+  http-equiv="Content-Security-Policy"
+  content="upgrade-insecure-requests"
+/>
+<meta charset="utf-8" />
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript">
+      $(function () {
+        var conn = null;
+        function log(msg) {
+          var control = $("#log");
+          control.html(control.html() + msg + "<br/>");
+          control.scrollTop(control.scrollTop() + 1000);
+        }
+        function connect() {
+          var wsUri =
+            ((window.location.protocol == "https:" && "wss://") || "ws://") +
+            window.location.host;
+          conn = new WebSocket(wsUri);
+          log("Connecting...");
+          conn.onopen = function () {
+            log("Connected.");
+          };
+          conn.onmessage = function (e) {
+            if (!e.data == "") {
+              log(e.data);
+            }
+          };
+          conn.onclose = function () {
+            log("Disconnected.");
+            conn = null;
+            // reconnect websocket on timeout
+            connect();
+          };
+        }
+        connect();
+        $("#send").click(function () {
+          let text = $("#text").val();
+          $.ajax({
+            url: "http://127.0.0.1:8181/news",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({ news: text }),
+            success: (data, status) => {
+              console.log(status);
+            },
+            error: (result, status, error) => {
+              console.log(error);
+            },
+          });
+          text = "";
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <h3>Лента Новостей!</h3>
+    <div
+      id="log"
+      style="
+        width: 20em;
+        height: 15em;
+        overflow: auto;
+        border: 1px solid black;
+      "
+    ></div>
+    <div>
+      <form id="post_news" onsubmit="return false;">
+        <input id="text" type="text" />
+        <input id="send" type="button" value="Send news" />
+      </form>
+    </div>
+  </body>
+</html>

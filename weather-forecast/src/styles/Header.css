@@ -1,0 +1,10 @@
+header {
+    margin: 2rem;
+    padding:35px;
+    color: rgba(218, 83, 83, 0.94);
+    background: #628c40;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
