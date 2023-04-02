@@ -1,0 +1,26 @@
+header {
+    color: #163E6C;
+    background: #EBE6D6;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 auto;
+}
+
+#btn-head {
+    margin-right: 5%;
+    color: #163E6C;
+    border: 2px solid #163E6C;
+}
+
+h2{
+    padding-right: 10%;
+}
+
+
+.logo {
+    width:200px;
+}
+
